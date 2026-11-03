@@ -61,6 +61,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'restaurant_list' %}">Restaurants</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'restaurant_inquiry' %}">Suggest restaurant</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'partner_application' %}">Add your kitchen</a>
+                </li>
 
                 {% if request.user.is_authenticated %}
                 <li class="nav-item dropdown nav-icon-item">

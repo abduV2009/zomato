@@ -10,7 +10,7 @@
             {% if cart_source %}Ordering from {{ cart_source }}. One cart can hold food from only one restaurant or kitchen.{% else %}Review your selected food items.{% endif %}
         </p>
     </div>
-    <a href="{% url 'home' %}" class="btn btn-outline-danger"><i class="bi bi-plus-lg"></i> Add Another Item</a>
+    <a href="{{ add_more_url }}" class="btn btn-outline-danger"><i class="bi bi-plus-lg"></i> Add Another Item</a>
 </div>
 {% if messages %}{% for message in messages %}<div class="alert alert-{{ message.tags|default:'danger' }}">{{ message }}</div>{% endfor %}{% endif %}
 

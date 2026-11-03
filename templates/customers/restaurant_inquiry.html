@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Suggest a restaurant | BiteZo{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm border-0 form-card">
+    <div class="card-body p-4">
+        <h2 class="page-title mb-2">Missing a restaurant?</h2>
+        <p class="text-muted mb-4">Tell us about a missing, unlisted, or new restaurant you want on BiteZo.</p>
+        {% if messages %}{% for message in messages %}<div class="alert alert-{{ message.tags|default:'success' }}">{{ message }}</div>{% endfor %}{% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Your name</label>
+                    <input name="name" class="form-control" value="{{ request.user.get_full_name|default:request.user.username }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ request.user.email|default:'' }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" name="phone" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Inquiry type</label>
+                    <select name="inquiry_type" class="form-select" required>
+                        <option value="missing">Missing restaurant</option>
+                        <option value="unlisted">Unlisted restaurant</option>
+                        <option value="new">New restaurant</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Restaurant name</label>
+                    <input name="restaurant_name" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">City</label>
+                    <input name="city" class="form-control">
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Details</label>
+                    <textarea name="details" class="form-control" rows="4" required placeholder="Where it is, what they serve, why it should be listed..."></textarea>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button class="btn btn-danger">Send inquiry</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

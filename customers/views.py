@@ -2,7 +2,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Customer, DeliveryAddress
+from django.contrib import messages
+from .models import Customer, DeliveryAddress, RestaurantInquiry, PartnerApplication
 from food_delivery.decorator import superuser_required
 
 # CREATE
@@ -178,3 +179,36 @@ def customer_delete(request, id):
         "customers/customer_confirm_delete.html",
         {"customer": customer}
     )
+
+
+def restaurant_inquiry(request):
+    if request.method == "POST":
+        RestaurantInquiry.objects.create(
+            name=request.POST.get("name", "").strip(),
+            email=request.POST.get("email", "").strip(),
+            phone=request.POST.get("phone", "").strip(),
+            inquiry_type=request.POST.get("inquiry_type", "missing"),
+            restaurant_name=request.POST.get("restaurant_name", "").strip(),
+            city=request.POST.get("city", "").strip(),
+            details=request.POST.get("details", "").strip(),
+        )
+        messages.success(request, "Thanks. We received your restaurant inquiry.")
+        return redirect("restaurant_inquiry")
+    return render(request, "customers/restaurant_inquiry.html")
+
+
+def partner_application(request):
+    if request.method == "POST":
+        PartnerApplication.objects.create(
+            owner_name=request.POST.get("owner_name", "").strip(),
+            email=request.POST.get("email", "").strip(),
+            phone=request.POST.get("phone", "").strip(),
+            place_type=request.POST.get("place_type", "restaurant"),
+            place_name=request.POST.get("place_name", "").strip(),
+            city=request.POST.get("city", "").strip(),
+            address=request.POST.get("address", "").strip(),
+            description=request.POST.get("description", "").strip(),
+        )
+        messages.success(request, "Thanks. We received your application.")
+        return redirect("partner_application")
+    return render(request, "customers/partner_application.html")

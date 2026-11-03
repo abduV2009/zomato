@@ -8,6 +8,8 @@ urlpatterns = [
     path("addresses/add/", views.address_create, name="address_create"),
     path("addresses/<int:id>/edit/", views.address_update, name="address_update"),
     path("addresses/<int:id>/delete/", views.address_delete, name="address_delete"),
+    path("suggest-restaurant/", views.restaurant_inquiry, name="restaurant_inquiry"),
+    path("partner-apply/", views.partner_application, name="partner_application"),
 
     path("", views.customer_list, name="customer_list"),
 

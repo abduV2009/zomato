@@ -3,6 +3,7 @@ from django.shortcuts import (
     redirect,
     get_object_or_404
 )
+from django.urls import reverse
 from food_delivery.decorator import *
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -71,6 +72,14 @@ def cart_detail(request):
         if not cart_source:
             cart_source = _source_label(product)
 
+    add_more_url = reverse("home")
+    if items:
+        source_product = items[0]["product"]
+        if source_product.restaurant_ref_id:
+            add_more_url = reverse("restaurant_detail", args=[source_product.restaurant_ref_id])
+        elif source_product.restaurant:
+            add_more_url = f"{reverse('home')}?q={source_product.restaurant}"
+
     delivery_fee = 0 if total >= FREE_DELIVERY_THRESHOLD else DELIVERY_FEE
     addresses = []
     if request.user.is_authenticated:
@@ -87,6 +96,7 @@ def cart_detail(request):
         "grand_total": total + delivery_fee,
         "addresses": addresses,
         "cart_source": cart_source,
+        "add_more_url": add_more_url,
     })
 
 
