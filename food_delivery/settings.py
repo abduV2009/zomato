@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
-import os
 
 import mimetypes
 
@@ -30,30 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-secure-p(s-hqeiw_&kh^41%@y#ok1s#2i5xbq82jtal)(_9%_3cofxz@9i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False").lower() in {"1", "true", "yes", "on"}
+DEBUG = True
 
-# Vercel sends this hostname for the deployed application. Extra custom domains
-# can be supplied as a comma-separated ALLOWED_HOSTS environment variable.
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "zomato-mauve.vercel.app"]
-ALLOWED_HOSTS.extend(
-    host.strip()
-    for host in os.environ.get("ALLOWED_HOSTS", "").split(",")
-    if host.strip()
-)
-
-# Required for Django's CSRF protection when authenticated forms are posted
-# from the Vercel URL. Add any custom production domain through the matching
-# CSRF_TRUSTED_ORIGINS environment variable.
-CSRF_TRUSTED_ORIGINS = ["https://zomato-mauve.vercel.app"]
-CSRF_TRUSTED_ORIGINS.extend(
-    origin.strip()
-    for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
-    if origin.strip()
-)
-
-# Kept out of the source URL configuration so deployments can set a private,
-# non-default administration path through the ADMIN_URL environment variable.
-ADMIN_URL = os.environ.get("ADMIN_URL", "staff-portal/")
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -75,7 +53,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -155,17 +132,6 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 STATIC_ROOT = BASE_DIR / "staticfiles"
-# Serve files from STATICFILES_DIRS without requiring collectstatic locally.
-WHITENOISE_USE_FINDERS = True
-WHITENOISE_AUTOREFRESH = DEBUG
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
-    },
-}
 
 
 # ============================================================
@@ -200,18 +166,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # ============================================================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
-# Browser and session protections. Secure cookies activate automatically when
-# DEBUG is disabled for a production HTTPS deployment.
-SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_SECURE = not DEBUG
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = "DENY"
-SECURE_REFERRER_POLICY = "same-origin"
 
 
 # Email

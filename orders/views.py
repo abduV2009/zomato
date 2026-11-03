@@ -32,9 +32,6 @@ def _source_key(product):
 def _source_label(product):
     kitchen = product.restaurant_ref
     if kitchen:
-        if kitchen.is_cloud_kitchen:
-            chef = kitchen.chef_name or kitchen.name
-            return f"{kitchen.name} by {chef}" if kitchen.chef_name else kitchen.name
         return kitchen.name
     return product.restaurant or product.name
 
